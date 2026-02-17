@@ -3,7 +3,7 @@ version: "3.8"
 services:
   agent:
     build: .
-    container_name: sotastack-agent
+    container_name: agentic-rag
     ports:
       - "${PORT:-8083}:8083"
     env_file: .env
@@ -23,7 +23,7 @@ services:
     environment:
       POSTGRES_USER: sotastack
       POSTGRES_PASSWORD: sotastack
-      POSTGRES_DB: sotastack_agent
+      POSTGRES_DB: agentic_rag
     ports:
       - "5432:5432"
     volumes:

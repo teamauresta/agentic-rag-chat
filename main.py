@@ -1,4 +1,4 @@
-"""SOTAStack Agent — FastAPI SSE streaming proxy to any OpenAI-compatible LLM."""
+"""Agentic RAG Chat — FastAPI SSE streaming proxy to any OpenAI-compatible LLM."""
 import json
 import time
 import logging
@@ -42,11 +42,11 @@ async def verify_api_key(request: Request):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("SOTAStack Agent starting on port %s", config.PORT)
+    logger.info("Agentic RAG Chat starting on port %s", config.PORT)
     yield
-    logger.info("SOTAStack Agent shutting down")
+    logger.info("Agentic RAG Chat shutting down")
 
-app = FastAPI(title="SOTAStack Agent", lifespan=lifespan)
+app = FastAPI(title="Agentic RAG Chat", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

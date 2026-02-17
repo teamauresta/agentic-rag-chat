@@ -12,9 +12,9 @@ RAG_MIN_SIMILARITY = float(os.getenv("RAG_MIN_SIMILARITY", "0.3"))
 
 DB_HOST = os.getenv("RAG_DB_HOST", "localhost")
 DB_PORT = int(os.getenv("RAG_DB_PORT", "5432"))
-DB_USER = os.getenv("RAG_DB_USER", "sotastack")
-DB_PASS = os.getenv("RAG_DB_PASS", "sotastack")
-DB_NAME = os.getenv("RAG_DB_NAME", "sotastack_agent")
+DB_USER = os.getenv("RAG_DB_USER", "postgres")
+DB_PASS = os.getenv("RAG_DB_PASS", "postgres")
+DB_NAME = os.getenv("RAG_DB_NAME", "agentic_rag")
 
 _model = None
 _pool = None

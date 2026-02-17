@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🤖 SOTAStack Agent</h1>
+  <h1 align="center">🤖 Agentic RAG Chat</h1>
   <p align="center"><strong>Self-hosted AI chat platform with RAG, guardrails, and streaming</strong></p>
   <p align="center">
     <img src="https://img.shields.io/badge/python-3.12-blue?logo=python" alt="Python">
@@ -39,7 +39,7 @@ Deploy your own AI assistant in minutes. Connect any OpenAI-compatible LLM (vLLM
                        │ HTTPS / SSE
                        ▼
 ┌─────────────────────────────────────────────────────────┐
-│                   SOTAStack Agent API                     │
+│                   Agentic RAG Chat API                     │
 │                     (FastAPI + Python)                    │
 │                                                           │
 │  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌─────────┐│
@@ -174,7 +174,7 @@ curl -X POST http://localhost:8083/api/v1/upload \
 
 ## 🛡️ Guardrails
 
-SOTAStack Agent includes three layers of protection:
+Agentic RAG Chat includes three layers of protection:
 
 1. **Input Guardrails** — Blocks prompt injection, jailbreak attempts, and model probing
 2. **Streaming Sanitisation** — Strips unwanted characters (e.g., CJK from English-only models) in real-time

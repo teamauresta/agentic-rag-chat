@@ -89,9 +89,9 @@ def main():
     conn = psycopg2.connect(
         host=os.getenv("RAG_DB_HOST", "localhost"),
         port=int(os.getenv("RAG_DB_PORT", "5432")),
-        user=os.getenv("RAG_DB_USER", "sotastack"),
-        password=os.getenv("RAG_DB_PASS", "sotastack"),
-        dbname=os.getenv("RAG_DB_NAME", "sotastack_agent"),
+        user=os.getenv("RAG_DB_USER", "postgres"),
+        password=os.getenv("RAG_DB_PASS", "postgres"),
+        dbname=os.getenv("RAG_DB_NAME", "agentic_rag"),
     )
 
     total_chunks = 0
