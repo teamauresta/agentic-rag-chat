@@ -1,0 +1,28 @@
+Acme Corp — Frequently Asked Questions
+
+Q: What does Acme Corp do?
+A: Acme Corp is a technology consulting firm specialising in cloud infrastructure, data engineering, and AI/ML solutions. Founded in 2018, we help mid-market companies modernise their technology stack.
+
+Q: Where is Acme Corp based?
+A: Our headquarters is in Melbourne, Australia, with satellite offices in Sydney and Brisbane. We serve clients across Australia and New Zealand.
+
+Q: What industries do you work with?
+A: We primarily work with financial services, healthcare, retail, and government sectors. Our solutions are industry-agnostic but we have deep domain expertise in these areas.
+
+Q: How many employees does Acme Corp have?
+A: As of 2025, Acme Corp has approximately 150 employees across engineering, consulting, and operations teams.
+
+Q: What is your approach to data privacy?
+A: We follow a data-sovereign approach. All client data stays within the client's infrastructure. We never transfer data to third-party cloud services without explicit written consent. We are ISO 27001 certified and SOC 2 Type II compliant.
+
+Q: Do you offer managed services?
+A: Yes. We offer three tiers of managed services:
+- Essential: 8x5 monitoring with 4-hour response SLA
+- Professional: 24x7 monitoring with 1-hour response SLA
+- Enterprise: 24x7 with dedicated team and 15-minute response SLA
+
+Q: What is your pricing model?
+A: We offer both project-based fixed pricing and time-and-materials engagements. Managed services are billed monthly. Contact sales@acmecorp.example.com for a quote.
+
+Q: How do I get started?
+A: Book a free 30-minute discovery call at acmecorp.example.com/book. We'll discuss your needs and propose a solution within 5 business days.

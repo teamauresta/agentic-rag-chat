@@ -1,0 +1,38 @@
+DataFlow Platform — Product Guide
+
+Overview
+DataFlow is Acme Corp's flagship data integration platform. It connects disparate data sources, transforms data in real-time, and delivers clean, structured datasets to downstream consumers.
+
+Key Features
+- Real-time streaming ingestion from 50+ source connectors (databases, APIs, message queues)
+- Visual pipeline builder with drag-and-drop transformation nodes
+- Built-in data quality checks: schema validation, null detection, anomaly scoring
+- Horizontal scaling — handles 100K+ events/second on modest hardware
+- Full audit trail and lineage tracking for compliance requirements
+
+Architecture
+DataFlow runs as a set of microservices deployed via Docker or Kubernetes:
+1. Ingestion Service — manages source connections and data capture
+2. Transform Engine — applies user-defined transformations (SQL, Python, or visual)
+3. Quality Gate — validates data against defined rules before delivery
+4. Delivery Service — pushes data to destinations (data warehouses, lakes, APIs)
+5. Control Plane — web UI for pipeline management, monitoring, and alerting
+
+System Requirements
+- CPU: 4+ cores (8 recommended for production)
+- RAM: 16GB minimum, 32GB recommended
+- Storage: 100GB SSD for metadata and buffering
+- OS: Linux (Ubuntu 22.04+, RHEL 8+), or Docker
+- Database: PostgreSQL 14+ for metadata storage
+
+Getting Started
+1. Pull the Docker images: docker pull acmecorp/dataflow:latest
+2. Copy the example config: cp .env.example .env
+3. Start services: docker-compose up -d
+4. Open the UI at http://localhost:8080
+5. Create your first pipeline using the setup wizard
+
+Support
+- Documentation: docs.acmecorp.example.com
+- Community Slack: slack.acmecorp.example.com
+- Enterprise support: support@acmecorp.example.com

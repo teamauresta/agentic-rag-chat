@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOTAStack Agent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366F1;
+      --primary-dark: #4F46E5;
+      --primary-light: #E0E7FF;
+      --dark: #111827;
+      --dark-2: #1F2937;
+      --dark-3: #374151;
+      --grey: #6B7280;
+      --grey-light: #9CA3AF;
+      --surface: #F9FAFB;
+      --white: #FFFFFF;
+      --danger: #EF4444;
+      --success: #10B981;
+      --border: rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: var(--dark);
+      color: var(--white);
+      height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      background: var(--dark-2);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo-box {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .brand-text h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-text p { font-size: 12px; color: var(--grey-light); margin-top: 1px; }
+    .header-status {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--grey-light);
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px rgba(16,185,129,.5);
+    }
+    .model-badge {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 11px; color: var(--grey-light); font-weight: 500;
+    }
+
+    /* ── Main ── */
+    main {
+      flex: 1; display: flex; flex-direction: column;
+      max-width: 900px; width: 100%; margin: 0 auto;
+    }
+
+    /* ── Welcome ── */
+    #welcome {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 24px;
+      padding: 40px;
+    }
+    .welcome-icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 8px 32px rgba(99,102,241,.25);
+    }
+    #welcome h2 { font-size: 24px; font-weight: 700; text-align: center; }
+    #welcome p {
+      color: var(--grey-light); text-align: center; max-width: 480px;
+      line-height: 1.6; font-size: 15px;
+    }
+    .quick-prompts {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+      max-width: 600px;
+    }
+    .quick-prompt {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 10px 16px; border-radius: 12px;
+      color: var(--grey-light); font-size: 13px; cursor: pointer;
+      transition: all .2s;
+    }
+    .quick-prompt:hover {
+      background: rgba(99,102,241,.1);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* ── Messages ── */
+    #chat-area { flex: 1; display: none; flex-direction: column; }
+    #chat-area.active { display: flex; }
+    #messages {
+      flex: 1; overflow-y: auto; padding: 24px 24px 8px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    #messages::-webkit-scrollbar { width: 4px; }
+    #messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
+
+    .msg { display: flex; gap: 12px; max-width: 85%; animation: fadeUp .3s ease-out; }
+    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg.bot { align-self: flex-start; }
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+    }
+    .msg.bot .msg-avatar { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+    .msg.user .msg-avatar { background: var(--dark-3); color: var(--grey-light); }
+    .msg-content { padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.65; }
+    .msg.bot .msg-content {
+      background: var(--dark-2); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 4px 16px 16px 16px; color: #E5E7EB;
+    }
+    .msg.user .msg-content {
+      background: var(--primary); color: white;
+      border-radius: 16px 16px 4px 16px; font-weight: 500;
+    }
+    .msg-content p { margin-bottom: 8px; }
+    .msg-content p:last-child { margin-bottom: 0; }
+    .msg-content strong { font-weight: 600; color: #fff; }
+    .msg-content code { background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    .msg-content ul, .msg-content ol { margin: 6px 0 8px 18px; }
+    .msg-content li { margin-bottom: 4px; }
+    .msg-content a { color: var(--primary); text-decoration: none; }
+    .writing-indicator { color: var(--grey-light); font-style: italic; font-size: 13px; padding: 4px 0 4px 44px; }
+
+    /* ── Input ── */
+    #input-area { padding: 16px 24px 24px; background: linear-gradient(180deg, transparent, var(--dark) 30%); }
+    .input-container {
+      display: flex; align-items: flex-end; gap: 12px;
+      background: var(--dark-2); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px; padding: 8px 8px 8px 20px; transition: border-color .2s;
+    }
+    .input-container:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,.1); }
+    #chat-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: #E5E7EB; font-size: 14px; font-family: inherit;
+      resize: none; max-height: 120px; line-height: 1.5; padding: 8px 0;
+    }
+    #chat-input::placeholder { color: var(--grey); }
+    #send-btn {
+      width: 40px; height: 40px; border-radius: 12px; border: none;
+      background: var(--primary); color: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s; flex-shrink: 0;
+    }
+    #send-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+    #send-btn:disabled { background: var(--dark-3); color: var(--grey); cursor: not-allowed; transform: none; }
+    #send-btn svg { width: 18px; height: 18px; }
+    #upload-btn {
+      width: 36px; height: 36px; border-radius: 10px; border: none;
+      background: transparent; color: var(--grey); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s; flex-shrink: 0;
+    }
+    #upload-btn:hover { color: var(--primary); background: rgba(99,102,241,.1); }
+    .upload-wrap { position: relative; flex-shrink: 0; }
+    .upload-tooltip {
+      position: absolute; bottom: calc(100% + 10px); left: 0;
+      background: var(--dark-2); border: 1px solid var(--dark-3);
+      border-radius: 10px; padding: 10px 14px;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4); z-index: 10;
+      width: max-content; max-width: 220px;
+    }
+    .upload-tooltip::after { content: ''; position: absolute; top: 100%; left: 18px; border: 6px solid transparent; border-top-color: var(--dark-2); }
+    .upload-wrap:hover .upload-tooltip { opacity: 1; }
+    .upload-tooltip .tt-title { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+    .upload-tooltip .tt-formats { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+    .upload-tooltip .tt-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(99,102,241,.12); color: var(--primary); font-weight: 500; font-family: monospace; }
+    .upload-tooltip .tt-limit { font-size: 10px; color: var(--grey); }
+    #kb-btn {
+      width: 36px; height: 36px; border-radius: 10px; border: none;
+      background: transparent; color: var(--grey); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s; flex-shrink: 0;
+    }
+    #kb-btn:hover { color: var(--primary); background: rgba(99,102,241,.1); }
+    .kb-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: center; justify-content: center; z-index: 100; }
+    .kb-overlay.active { display: flex; }
+    .kb-modal {
+      background: var(--dark-2); border: 1px solid var(--dark-3);
+      border-radius: 14px; padding: 20px 24px; width: 90%; max-width: 420px;
+      max-height: 70vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(0,0,0,.5);
+    }
+    .kb-modal h3 { margin: 0 0 14px; font-size: 15px; font-weight: 600; }
+    .kb-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--dark-3); }
+    .kb-item:last-child { border-bottom: none; }
+    .kb-item-name { font-size: 13px; }
+    .kb-item-meta { font-size: 11px; color: var(--grey); text-align: right; }
+    .kb-empty { font-size: 13px; color: var(--grey); padding: 12px 0; }
+    .kb-close { float: right; background: none; border: none; color: var(--grey); font-size: 18px; cursor: pointer; }
+    .input-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding: 0 4px; }
+    .input-footer span { font-size: 11px; color: var(--grey); }
+    .secure-badge { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--success); }
+
+    footer { padding: 12px 24px; text-align: center; font-size: 11px; color: var(--grey); border-top: 1px solid rgba(255,255,255,.04); }
+    footer a { color: var(--grey-light); text-decoration: none; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 640px) { header { padding: 12px 16px; } #messages { padding: 16px; } #input-area { padding: 12px 16px 16px; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="logo-box">🤖</div>
+      <div class="brand-text">
+        <h1 id="app-title">SOTAStack Agent</h1>
+        <p id="app-subtitle">Self-hosted AI Assistant</p>
+      </div>
+    </div>
+    <div class="header-status">
+      <span class="model-badge">🔒 Self-Hosted · Your Data</span>
+      <div class="status-dot"></div>
+      <span>Online</span>
+    </div>
+  </header>
+
+  <main>
+    <div id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <h2 id="welcome-title">Ask me anything</h2>
+      <p>Your self-hosted AI assistant with RAG-powered knowledge base. Upload documents and ask questions — everything stays on your infrastructure.</p>
+      <div class="quick-prompts">
+        <div class="quick-prompt" onclick="askPrompt(this)">What documents are in the knowledge base?</div>
+        <div class="quick-prompt" onclick="askPrompt(this)">Summarise the company FAQ</div>
+        <div class="quick-prompt" onclick="askPrompt(this)">What products do we offer?</div>
+        <div class="quick-prompt" onclick="askPrompt(this)">How do I onboard as a new employee?</div>
+      </div>
+    </div>
+
+    <div id="chat-area">
+      <div id="messages"></div>
+    </div>
+  </main>
+
+  <div class="kb-overlay" id="kb-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+    <div class="kb-modal">
+      <button class="kb-close" onclick="document.getElementById('kb-overlay').classList.remove('active')">&times;</button>
+      <h3>📚 Knowledge Base</h3>
+      <div id="kb-list"><div class="kb-empty">Loading...</div></div>
+    </div>
+  </div>
+
+  <div id="input-area">
+    <div class="input-container">
+      <button id="kb-btn" title="Knowledge Base">📚</button>
+      <div class="upload-wrap">
+        <div class="upload-tooltip">
+          <div class="tt-title">Upload Document</div>
+          <div class="tt-formats">
+            <span class="tt-tag">PDF</span><span class="tt-tag">DOCX</span>
+            <span class="tt-tag">CSV</span><span class="tt-tag">TXT</span><span class="tt-tag">MD</span>
+          </div>
+          <div class="tt-limit">Max file size: 50 MB</div>
+        </div>
+        <button id="upload-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        </button>
+        <input type="file" id="file-input" accept=".pdf,.txt,.md,.docx,.csv" style="display:none">
+      </div>
+      <textarea id="chat-input" rows="1" placeholder="Ask a question..."></textarea>
+      <button id="send-btn" disabled>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="input-footer">
+      <span>Self-hosted · Private & Secure</span>
+      <div class="secure-badge">🔒 Your infrastructure, your data</div>
+    </div>
+  </div>
+
+  <footer>
+    Built with <a href="https://sotastack.com.au" target="_blank">SOTAStack Agent</a> — open source, self-hosted AI
+  </footer>
+
+  <script>
+    // ── Configuration ──
+    // Override these via URL params: ?api=http://host:8083/api/v1&key=your-key&title=My+Agent
+    const params = new URLSearchParams(window.location.search);
+    const API = params.get('api') || (window.location.origin + '/api/v1');
+    const API_KEY = params.get('key') || 'change-me-in-production';
+
+    if (params.get('title')) {
+      document.getElementById('app-title').textContent = params.get('title');
+      document.getElementById('welcome-title').textContent = params.get('title');
+    }
+    if (params.get('subtitle')) {
+      document.getElementById('app-subtitle').textContent = params.get('subtitle');
+    }
+
+    const msgs = document.getElementById('messages');
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const welcome = document.getElementById('welcome');
+    const chatArea = document.getElementById('chat-area');
+
+    input.addEventListener('input', () => {
+      sendBtn.disabled = !input.value.trim();
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    });
+
+    function renderMd(text) {
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`(.+?)`/g, '<code>$1</code>')
+        .replace(/\[(.*?)\]\((https?:\/\/.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
+        .replace(/^[-•]\s+(.+)/gm, '<li>$1</li>')
+        .replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>')
+        .replace(/<\/ul>\s*<ul>/g, '')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>')
+        .replace(/^/, '<p>').replace(/$/, '</p>');
+    }
+
+    function addMsg(role, text) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + role;
+      const avatar = document.createElement('div');
+      avatar.className = 'msg-avatar';
+      avatar.textContent = role === 'bot' ? '🤖' : '▸';
+      const content = document.createElement('div');
+      content.className = 'msg-content';
+      content.innerHTML = role === 'bot' ? renderMd(text) : '';
+      if (role === 'user') content.textContent = text;
+      div.appendChild(avatar);
+      div.appendChild(content);
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+      return content;
+    }
+
+    function showWriting() {
+      const div = document.createElement('div');
+      div.className = 'writing-indicator';
+      div.id = 'writing';
+      div.textContent = 'Thinking...';
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function askPrompt(el) {
+      input.value = el.textContent.trim();
+      sendBtn.disabled = false;
+      send();
+    }
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      input.style.height = 'auto';
+      sendBtn.disabled = true;
+
+      welcome.style.display = 'none';
+      chatArea.classList.add('active');
+      addMsg('user', text);
+      showWriting();
+
+      try {
+        const res = await fetch(API + '/chat', {
+          method: 'POST', mode: 'cors',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY },
+          body: JSON.stringify({ message: text, session_id: window._sessionId || null })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const sid = res.headers.get('X-Session-ID');
+        if (sid) window._sessionId = sid;
+
+        const w = document.getElementById('writing');
+        if (w) w.remove();
+
+        const botContent = addMsg('bot', '');
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '', fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+          for (const line of lines) {
+            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+              try {
+                const data = JSON.parse(line.slice(6));
+                const delta = data.choices?.[0]?.delta?.content;
+                if (delta) { fullText += delta; botContent.innerHTML = renderMd(fullText); msgs.scrollTop = msgs.scrollHeight; }
+              } catch {}
+            }
+          }
+        }
+        if (!fullText) botContent.innerHTML = '<p><em>(empty response)</em></p>';
+      } catch (e) {
+        const w = document.getElementById('writing');
+        if (w) w.remove();
+        addMsg('bot', '**Error:** Could not connect to the AI model. Check that the agent is running.');
+        console.error(e);
+      }
+      sendBtn.disabled = !input.value.trim();
+      input.focus();
+    }
+
+    sendBtn.onclick = send;
+    input.onkeydown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
+
+    // Knowledge Base modal
+    document.getElementById('kb-btn').onclick = async () => {
+      const overlay = document.getElementById('kb-overlay');
+      const list = document.getElementById('kb-list');
+      overlay.classList.add('active');
+      list.innerHTML = '<div class="kb-empty">Loading...</div>';
+      try {
+        const res = await fetch(API + '/files', { headers: { 'Authorization': 'Bearer ' + API_KEY } });
+        const data = await res.json();
+        if (!data.files?.length) { list.innerHTML = '<div class="kb-empty">No documents indexed yet. Upload files to build the knowledge base.</div>'; return; }
+        list.innerHTML = data.files.map(f => `<div class="kb-item"><div class="kb-item-name">${f.source} <span class="tt-tag" style="font-size:9px;padding:1px 5px;">${(f.file_type||'').toUpperCase()}</span></div><div class="kb-item-meta">${f.chunks} chunk${f.chunks!==1?'s':''}</div></div>`).join('');
+      } catch { list.innerHTML = '<div class="kb-empty">Failed to load knowledge base.</div>'; }
+    };
+
+    // File upload
+    const uploadBtn = document.getElementById('upload-btn');
+    const fileInput = document.getElementById('file-input');
+    uploadBtn.onclick = () => fileInput.click();
+    fileInput.onchange = async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      fileInput.value = '';
+      if (file.size > 50 * 1024 * 1024) { welcome.style.display = 'none'; chatArea.classList.add('active'); addMsg('bot', '**Error:** File too large — 50 MB limit.'); return; }
+      welcome.style.display = 'none';
+      chatArea.classList.add('active');
+      const statusEl = addMsg('bot', 'Uploading **' + file.name + '** ...');
+      sendBtn.disabled = true; uploadBtn.disabled = true;
+      try {
+        const fd = new FormData(); fd.append('file', file);
+        const res = await fetch(API + '/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + API_KEY }, body: fd });
+        const data = await res.json();
+        statusEl.innerHTML = res.ok ? renderMd('Indexed **' + data.chunks + ' sections** from ' + file.name) : renderMd('**Upload failed:** ' + (data.detail || 'Unknown error'));
+      } catch (e) { statusEl.innerHTML = renderMd('**Upload failed:** ' + e.message); }
+      sendBtn.disabled = !input.value.trim(); uploadBtn.disabled = false;
+    };
+  </script>
+</body>
+</html>

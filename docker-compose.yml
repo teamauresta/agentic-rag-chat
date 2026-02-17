@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  agent:
+    build: .
+    container_name: sotastack-agent
+    ports:
+      - "${PORT:-8083}:8083"
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./prompts:/app/prompts
+      - ./docs:/app/docs
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: sotastack-postgres
+    environment:
+      POSTGRES_USER: sotastack
+      POSTGRES_PASSWORD: sotastack
+      POSTGRES_DB: sotastack_agent
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sotastack"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: sotastack-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+  redisdata:

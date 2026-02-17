@@ -1,0 +1,33 @@
+New Employee Onboarding Guide — Acme Corp
+
+Welcome to Acme Corp! This guide covers everything you need to get started in your first week.
+
+Day 1: Setup
+- Collect your laptop from IT (Level 3, Room 302)
+- Set up your email and Slack accounts (credentials in your welcome email)
+- Complete mandatory security awareness training (30 minutes, online)
+- Meet your buddy — they'll show you around the office
+
+Day 2-3: Tools & Access
+- Request access to GitHub, Jira, and Confluence via the IT portal (it.acmecorp.internal)
+- Set up your development environment using the dev-setup script: ./scripts/setup-dev.sh
+- Review the Engineering Handbook in Confluence
+- Complete your first PR — even if it's just fixing a typo. Ship something!
+
+Day 4-5: Team Integration
+- Attend your team's standup and sprint planning
+- Schedule 1:1 coffee chats with 3-4 team members
+- Review the current sprint board and pick up a starter ticket (tagged "good-first-issue")
+- Set up your 30/60/90 day goals with your manager
+
+Key Policies
+- Flexible hours: Core hours are 10am-3pm AEST. Work the rest when it suits you.
+- Remote work: Up to 3 days per week after your first month.
+- Leave: 20 days annual leave + 10 days personal/sick leave.
+- Learning budget: $2,000/year for courses, conferences, and books.
+
+Key Contacts
+- IT Support: it@acmecorp.example.com or Slack #it-help
+- HR: hr@acmecorp.example.com
+- Facilities: facilities@acmecorp.example.com
+- Your manager: Check your welcome email for details
