@@ -5,7 +5,7 @@ redis[hiredis]==5.2.1
 tiktoken==0.8.0
 pydantic==2.10.4
 sentence-transformers==3.3.1
-psycopg2-binary==2.9.10
+psycopg2-binary==2.9.11
 numpy>=1.26.0
 pdfplumber==0.11.4
 python-multipart==0.0.18
