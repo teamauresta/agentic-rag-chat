@@ -2,6 +2,7 @@
   <h1 align="center">🤖 Agentic RAG Chat</h1>
   <p align="center"><strong>Self-hosted AI chat platform with RAG, guardrails, and streaming</strong></p>
   <p align="center">
+    <img src="https://github.com/teamauresta/agentic-rag-chat/actions/workflows/ci.yml/badge.svg" alt="CI">
     <img src="https://img.shields.io/badge/python-3.12-blue?logo=python" alt="Python">
     <img src="https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi" alt="FastAPI">
     <img src="https://img.shields.io/badge/pgvector-PostgreSQL-336791?logo=postgresql" alt="pgvector">
